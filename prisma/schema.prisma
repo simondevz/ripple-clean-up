@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+model WasteCollectionPoints {
+  id            Int        @id @default(autoincrement())
+  account       String     @unique
+  name          String
+  phone         String?
+  email         String?
+  address       String
+  wasteRecords  WasteRecords[]
+  createdAt     DateTime   @default(now())
+}
+
+model WasteRecords {
+  id            Int                   @id @default(autoincrement())
+  account       String
+  number        Int
+  verified      Boolean
+  images        Image[]
+  wcp           WasteCollectionPoints @relation(fields: [wcpId], references: [id])
+  wcpId         Int
+  createdAt     DateTime              @default(now())
+}
+
+// Define the model for the images
+model Image {
+  id              Int             @id @default(autoincrement())
+  url             String
+  wasteRecord     WasteRecords    @relation(fields: [wasteRecordId], references: [id])
+  wasteRecordId   Int
+  createdAt       DateTime        @default(now())
+}
