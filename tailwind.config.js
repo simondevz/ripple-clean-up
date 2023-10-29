@@ -9,6 +9,10 @@ module.exports = {
     colors: {
       milk: "#F6F6F6",
       primary: "rgba(156, 140, 255, 0.3)",
+      white: "#fff",
+      btnText: "#2D2D2D",
+      ash: "#626262",
+      blue: "#000AFF",
     },
     extend: {
       backgroundImage: {

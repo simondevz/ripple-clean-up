@@ -1,11 +1,18 @@
+import Image from "next/image";
 import { useEffect } from "react";
 import { useState } from "react";
+import { RiArrowDownLine, RiArrowUpLine } from "react-icons/ri";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { LuMoreVertical } from "react-icons/lu";
+import { IoIosArrowBack } from "react-icons/io";
 import { useSelector } from "react-redux";
+import ripplelogo from "../../public/clenUpLogo.png";
 import {
   Client,
   isValidClassicAddress,
   xrpToDrops,
   Wallet as XrplWallet,
+  dropsToXrp,
 } from "xrpl";
 
 export default function Wallet() {
@@ -45,10 +52,47 @@ export default function Wallet() {
 
   const AccountInfo = () => {
     return (
-      <div className="flex flex-col">
-        {/* // format balance to xrp */}
-        <span>Balance: {balance}XRP</span>
-        <span>Address: {wallet?.classicAddress}</span>
+      <div className="flex flex-col gap-6">
+        <div className="flex justify-between gap-44">
+          <span className="flex text-[0.875rem] text-ash">
+            <IoIosArrowBack className="my-auto font-semibold" />
+            <span className="my-auto">COIN</span>
+          </span>
+          <span className="flex text-[0.75rem] gap-2">
+            <span className="text-ash">$0.56</span>
+            <span className="text-blue">+0.97%</span>
+          </span>
+        </div>
+        <div className="flex mx-auto flex-col justify-center">
+          <Image src={ripplelogo} alt="cc" className="w-12 h-12 my-2" />
+          <span className="font-semibold text-[1.2rem]">
+            {dropsToXrp(balance)} XRP
+          </span>
+        </div>
+        <div className="flex gap-10 mx-16 text-[0.875rem]">
+          <button
+            onClick={() => {
+              setHideWallet(true);
+              setShowSend(true);
+            }}
+            className="flex flex-col mx-auto gap-2"
+          >
+            <RiArrowUpLine className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
+            <span>Send</span>
+          </button>
+          <button className="flex flex-col mx-auto gap-2">
+            <RiArrowDownLine className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
+            <span>Recieve</span>
+          </button>
+          <button className="flex flex-col mx-auto gap-2">
+            <BiMoneyWithdraw className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
+            <span>Withdraw</span>
+          </button>
+          <button className="flex flex-col mx-auto gap-2">
+            <LuMoreVertical className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
+            <span>More</span>
+          </button>
+        </div>
       </div>
     );
   };
@@ -88,17 +132,17 @@ export default function Wallet() {
       <div
         className={`${
           hideWallet && showSend ? "flex " : "hidden "
-        } p-4 flex-col gap-4 border`}
+        } p-8 flex-col gap-8 bg-white rounded-lg my-auto`}
       >
         <input
           onChange={(event) => setSendTo(event.target.value)}
-          className="p-4 border bg-transparent"
+          className="p-4 border-4 border-primary rounded-lg focus:outline-none bg-transparent"
           placeholder="Account Address"
           value={sendTo}
         />
         <input
           onChange={(event) => setAmount(event.target.value)}
-          className="p-4 border bg-transparent"
+          className="p-4 border-4 border-primary rounded-lg focus:outline-none bg-transparent"
           placeholder="Amount"
           value={amount}
         />
@@ -128,18 +172,18 @@ export default function Wallet() {
               console.log(response);
               await client.disconnect();
             }}
-            className="flex p-4 border"
+            className="flex p-4 rounded-lg bg-primary w-full"
           >
-            Send
+            <span className="mx-auto">Send</span>
           </button>
           <button
-            className="flex p-4 border"
+            className="flex p-4 rounded-lg bg-primary w-full"
             onClick={() => {
               setHideWallet(false);
               setShowSend(false);
             }}
           >
-            Cancel
+            <span className="mx-auto">Cancel</span>
           </button>
         </div>
       </div>
@@ -151,28 +195,18 @@ export default function Wallet() {
       <div
         className={`${
           hideWallet ? "hidden " : "flex "
-        } p-4 flex-col gap-4 border`}
+        } p-4 flex-col my-8 rounded-lg bg-white gap-4`}
       >
         <AccountInfo />
-        <div className="flex gap-4">
-          <button
+        <div className="flex bg-[#A2A2A2] w-full h-[0.1rem]">
+          {/* <button
             onClick={() => {
               setHideWallet(true);
             }}
             className="flex p-4 border"
           >
             Swap Token
-          </button>
-
-          <button
-            onClick={() => {
-              setHideWallet(true);
-              setShowSend(true);
-            }}
-            className="flex p-4 border"
-          >
-            Send Token
-          </button>
+          </button> */}
         </div>
         <TransactionList />
       </div>

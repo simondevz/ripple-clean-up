@@ -7,6 +7,7 @@ import { convertToBase64 } from "./utils";
 import validator from "validator";
 import Popup from "./popup";
 import Profile from "./profile";
+import { HiSearch } from "react-icons/hi";
 
 export default function ListWCP() {
   const [wcpList, setWCPList] = useState([]);
@@ -110,28 +111,28 @@ export default function ListWCP() {
     const [displayList, setDisplayList] = useState(false);
 
     return (
-      <div className="flex flex-col gap-4 bg-black border p-4 my-auto">
+      <div className="flex flex-col gap-6 bg-white rounded-lg py-12 px-16 my-auto">
         <button
           onClick={() => setDisplayList(!displayList)}
-          className="flex flex-col border p-2"
+          className="flex flex-col border-4 border-primary relative rounded-lg p-2"
         >
-          <span className="text-[0.875rem] font-semibold">
+          <span className="text-[0.875rem] font-semibold flex w-full">
             Selected Waste Collection Point:
           </span>
-          <span className="text-[0.875rem]">
+          <span className="text-[0.875rem] flex w-full">
             {selectedWCP?.name || "Select a Waste Collection Point"}
           </span>
 
           <ul
             className={`${
               displayList ? "flex " : "hidden "
-            } flex-col bg-black top-10 left-0 z-50 absolute`}
+            } flex-col bg-white w-full rounded-lg top-[4.5rem] p-4 left-0 z-50 absolute`}
           >
             {listOfWCP.map((wcp) => {
               return (
                 <li
                   onClick={() => setSelectedWCP(wcp)}
-                  className="p-2 border "
+                  className="p-2 border-b "
                   key={wcp.id}
                 >
                   <span>{wcp.name}</span>
@@ -144,7 +145,7 @@ export default function ListWCP() {
 
         <input
           onChange={(event) => setFiles(event.target.files)}
-          className="border bg-transparent p-4"
+          className="border-4 border-primary rounded-lg focus:outline-none bg-transparent p-4"
           type="file"
           multiple
         />
@@ -159,7 +160,7 @@ export default function ListWCP() {
 
             setNumber("");
           }}
-          className="border bg-transparent p-4"
+          className="focus:outline-none border-4 border-primary rounded-lg bg-transparent p-4"
           placeholder="Number of Bags collected"
           value={Number(number) || ""}
         />
@@ -184,7 +185,7 @@ export default function ListWCP() {
               const reqData = {
                 images,
                 number,
-                // wcpId: selectedWCP?.id,
+                wcpId: selectedWCP?.id,
                 account: wallet.classicAddress,
               };
 
@@ -197,9 +198,9 @@ export default function ListWCP() {
               console.log(error);
             }
           }}
-          className="p-4 border"
+          className="flex p-4 rounded-lg bg-primary w-full"
         >
-          Submit Waste
+          <span className="mx-auto">Submit Waste</span>
         </button>
       </div>
       // </div>
@@ -207,29 +208,42 @@ export default function ListWCP() {
   };
 
   return (
-    <div className={`flex bg-primary flex-col gap-4 w-1/2`}>
-      <input className="p-4 border bg-transparent" placeholder="Search WCP" />
+    <div className={`flex flex-col gap-4 w-1/2`}>
+      <div className="flex flex-col bg-primary gap-8 py-8 px-4 rounded-lg">
+        <span className="flex bg-white rounded-full">
+          <HiSearch className="my-auto w-4 h-4 ml-4 mr-2 text=[#434343]" />
+          <input
+            className="p-[.3rem] bg-transparent w-full rounded-full focus:outline-none"
+            placeholder="Search Waste Collection Points"
+          />
+        </span>
 
-      <ul className="flex gap-2 flex-col py-4 overflow-x-auto h-[21rem]">
-        {wcpList.map((wcp) => {
-          return (
-            <li
-              onClick={() => {
-                setShow("profile");
-                setProfileWCP(wcp);
-              }}
-              className="border p-4 flex flex-col"
-              key={wcp.id}
-            >
-              <span className="text-[0.875rem]">{wcp.name}</span>
-              <span className="text-[0.75rem]">{wcp.address}</span>
-            </li>
-          );
-        })}
-      </ul>
+        <ul className="flex gap-2 flex-col py-4 overflow-x-auto h-[21rem]">
+          {wcpList.map((wcp) => {
+            return (
+              <li
+                onClick={() => {
+                  setShow("profile");
+                  setProfileWCP(wcp);
+                }}
+                className="border-b border-[#A2A2A2] py-2 flex gap-2 flex-col"
+                key={wcp.id}
+              >
+                <span className="text-[0.875rem] text-btnText font-semibold">
+                  {wcp.name}
+                </span>
+                <span className="text-[0.75rem] text-btnText">
+                  {wcp.address}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
       <span className="flex flex-col gap-2 p-2">
         <button
+          className="hidden"
           onClick={() => {
             if (!connected) {
               alert("plese connect your wallet");
@@ -249,9 +263,11 @@ export default function ListWCP() {
 
             setShow("submitform");
           }}
-          className="border p-4 flex"
+          className="bg-primary p-8 w-full rounded-lg flex"
         >
-          Submit Proof of Work
+          <span className="mx-auto text-[0.875rem] font-semibold">
+            Submit Waste Bags
+          </span>
         </button>
       </span>
       <Popup

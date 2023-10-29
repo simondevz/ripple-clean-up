@@ -15,7 +15,6 @@ import axios from "axios";
 import { Client, Wallet as XrplWallet } from "xrpl";
 import Image from "next/image";
 import ripplelogo from "../../public/clenUpLogo.png";
-import { RiArrowDownSLine } from "react-icons/ri";
 
 // Idea: I could hash the users secret and save it on there localstorage
 //   that way i can decode it later, or better yet use jwt for that.
@@ -62,32 +61,34 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="relative bg-milk flex flex-col">
-      <nav className="flex justify-between p-4 ">
-        <div className="flex justify-between gap-6">
-          <div className="flex gap-2 justify-between">
-            <Image src={ripplelogo} alt="cc" className="w-6 h-6 my-auto" />
-            <span className="flex my-auto flex-col text-[0.75rem] font-semibold">
-              <span className="leading-4">Ripple</span>
-              <span className="leading-4">Clen Up</span>
-            </span>
+    <>
+      <div className="relative bg-milk flex flex-col">
+        <nav className="flex justify-between p-4 ">
+          <div className="flex justify-between gap-6">
+            <div className="flex gap-2 justify-between">
+              <Image src={ripplelogo} alt="cc" className="w-6 h-6 my-auto" />
+              <span className="flex my-auto flex-col text-[0.75rem] font-semibold">
+                <span className="leading-4">Ripple</span>
+                <span className="leading-4">Clen Up</span>
+              </span>
+            </div>
+            <button className="flex px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg">
+              Register as a WCP
+            </button>
           </div>
-          <button className="flex px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg">
-            Register as a WCP
+
+          <span className="flex font-bold my-auto text-[1.5rem] relative left-[-5rem]">
+            Dashboard
+          </span>
+
+          <button
+            onClick={() => setShow(true)}
+            className="flex  px-6 my-auto pt-[0.3rem] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
+          >
+            {connected ? "Wallet" : "Connect Wallet"}
           </button>
-        </div>
-
-        <span className="flex font-bold my-auto text-[1.5rem] relative left-[-5rem]">
-          Dashboard
-        </span>
-
-        <button
-          onClick={() => setShow(true)}
-          className="flex  px-6 my-auto pt-[0.3rem] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
-        >
-          {connected ? "Wallet" : "Connect Wallet"}
-        </button>
-      </nav>
+        </nav>
+      </div>
       <Popup
         show={show}
         child={connected ? <Wallet /> : <Signup />}
@@ -96,6 +97,6 @@ export default function Navbar() {
           dispatch(toggleShowAddWallet(false));
         }}
       />
-    </div>
+    </>
   );
 }
