@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Client, Wallet, dropsToXrp } from "xrpl";
+import { GetTimeAgo, ShorthenedAddress } from "./utils";
 
 export default function Analytics() {
   const [transactionsList, setTransactionList] = useState([]);
@@ -36,22 +37,26 @@ export default function Analytics() {
   }, [refresh]);
 
   return (
-    <div className="flex w-1/2 flex-col gap-4 p-4">
+    <div className="flex w-1/2 flex-col gap-4 px-4">
       <div className="flex gap-4">
-        <div className="p-4 flex border flex-col">
-          <span>Total Bags Clenned</span>
-          <span>10,749</span>
+        <div className="p-4 flex w-full rounded-lg bg-primary flex-col">
+          <span className="font-semibold">Waste Collected This Week</span>
+          <span>10,749+</span>
         </div>
-        <div className="p-4 flex border flex-col">
-          <span>Total Incentives Given</span>
-          <span>$3,504.25</span>
+        <div className="p-4 flex w-full rounded-lg bg-primary flex-col">
+          <span className="font-semibold">Amount Rewarded</span>
+          <span>$3,504.25+</span>
         </div>
       </div>
-      <div className="flex gap-4 flex-col ">
-        <span>Recent Transactions</span>
 
-        <ul className="flex gap-2 flex-col py-4 overflow-x-auto h-[21rem]">
+      <div className="flex flex-col bg-primary rounded-lg px-6 ">
+        <span className="mt-6 font-semibold">
+          Recent Rewards for Recorded Wastes
+        </span>
+
+        <ul className="flex gap-2 flex-col py-4 overflow-x-auto h-[19rem]">
           {transactionsList.map((transaction) => {
+            // still need to check that the destination is not its address
             if (transaction.tx.TransactionType !== "Payment") return;
 
             // Returns the amount recieved in xrp and no of bags the person gave
@@ -64,21 +69,31 @@ export default function Analytics() {
             const [amount, bags] = toBagsNAmount(transaction.tx.Amount);
 
             return (
-              <li className="border p-4 " key={transaction.tx.hash}>
-                <span>
-                  {transaction.tx.Destination} recorded {bags} wastes
+              <li
+                className="border-b border-[#a2a2a2] flex justify-between text-[0.875rem] pt-8 pb-2 mx-2"
+                key={transaction.tx.hash}
+              >
+                <span className="flex gap-2">
+                  <ShorthenedAddress address={transaction.tx.Destination} />
+                  recorded {bags} wastes
                 </span>
-                <span>
+                <span className="flex gap-4">
                   <span>Recieved</span>
-                  <span>{amount}</span>
+                  <span className="text-blue">+{amount}xrp</span>
+                  {/* <span className="text-btnText text-[0.75rem]">
+                    {<GetTimeAgo time={transaction.tx.date} />}
+                  </span> */}
                 </span>
               </li>
             );
           })}
         </ul>
         <button onClick={() => setRefresh(!refresh)}>refresh list</button>
-        <Link href={"/#"}>Your Clen-up History</Link>
       </div>
+
+      <button className="w-full bg-primary rounded-lg p-8">
+        <span className="mx-auto font-semibold">Personal Clean up History</span>
+      </button>
     </div>
   );
 }

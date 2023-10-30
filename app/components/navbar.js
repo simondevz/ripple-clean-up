@@ -15,6 +15,7 @@ import axios from "axios";
 import { Client, Wallet as XrplWallet } from "xrpl";
 import Image from "next/image";
 import ripplelogo from "../../public/clenUpLogo.png";
+import WcpForm from "./wcpForm";
 
 // Idea: I could hash the users secret and save it on there localstorage
 //   that way i can decode it later, or better yet use jwt for that.
@@ -60,6 +61,11 @@ export default function Navbar() {
     })();
   }, []);
 
+  const onclick = () => {
+    setShow(false);
+    dispatch(toggleShowAddWallet(false));
+  };
+
   return (
     <>
       <div className="relative bg-milk flex flex-col">
@@ -72,7 +78,10 @@ export default function Navbar() {
                 <span className="leading-4">Clen Up</span>
               </span>
             </div>
-            <button className="flex px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg">
+            <button
+              onClick={() => setShow("wcpform")}
+              className="flex px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
+            >
               Register as a WCP
             </button>
           </div>
@@ -91,11 +100,16 @@ export default function Navbar() {
       </div>
       <Popup
         show={show}
-        child={connected ? <Wallet /> : <Signup />}
-        onclick={() => {
-          setShow(false);
-          dispatch(toggleShowAddWallet(false));
-        }}
+        child={
+          show === "wcpform" ? (
+            <WcpForm onclick={onclick} wallet={wallet} />
+          ) : connected ? (
+            <Wallet />
+          ) : (
+            <Signup />
+          )
+        }
+        onclick={onclick}
       />
     </>
   );

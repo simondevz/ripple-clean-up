@@ -64,7 +64,7 @@ export default function Wallet() {
           </span>
         </div>
         <div className="flex mx-auto flex-col justify-center">
-          <Image src={ripplelogo} alt="cc" className="w-12 h-12 my-2" />
+          <Image src={ripplelogo} alt="cc" className="w-12 h-12 my-2 mx-auto" />
           <span className="font-semibold text-[1.2rem]">
             {dropsToXrp(balance)} XRP
           </span>

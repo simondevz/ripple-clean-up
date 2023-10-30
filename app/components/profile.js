@@ -4,13 +4,15 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiArrowDownSFill } from "react-icons/ri";
+import { useSelector } from "react-redux";
 import { Client, Wallet, xrpToDrops } from "xrpl";
 
-export default function Profile({ display, wcp }) {
+export default function Profile({ wcp }) {
   const [refresh, setRefresh] = useState(false);
   const [loading, setloading] = useState(false);
+  const { wallet } = useSelector((state) => state.app);
 
-  const [filterVerified, setFilterVerified] = useState(false);
+  const [filter, setFilter] = useState(false);
   const [displayImageList, setDisplayImageList] = useState(0);
   const [submitionsList, setSubmitionsList] = useState([]);
 
@@ -28,49 +30,79 @@ export default function Profile({ display, wcp }) {
       setloading(false);
     };
 
-    if (wcp?.id) getWasteData();
-  }, [refresh, wcp?.id]);
+    if (wcp?.account === wallet?.classicAddress) {
+      getWasteData();
+    } else {
+      setSubmitionsList(null);
+    }
+  }, [refresh, wcp?.account, wallet?.classicAddress]);
 
   return (
-    // <div
-    //   className={
-    //     (display ? "flex " : "hidden ") + "absolute w-full h-full left-0 top-0"
-    //   }
-    // >
-    <div className="bg-black border p-4 justify-center my-auto flex flex-col gap-4">
-      <div className="flex border p-4"> WCP details</div>
-      <div className="flex border p-4">
-        {loading ? (
-          "loading..."
-        ) : (
-          <div>
-            <div>
-              <div className="flex w-full justify-between">
+    <div className="bg-white rounded-lg py-4 px-8 justify-center my-auto flex flex-col gap-4">
+      <h1 className="my-4 mx-auto font-semibold">
+        Waste Collection Point Profile
+      </h1>
+      <div className="flex flex-col gap-4 rounded-lg bg-primary p-4 text-[0.875rem]">
+        <div className="flex ">
+          <span className="w-32 font-semibold">Name:</span>
+          <span className="">{wcp?.name}</span>
+        </div>
+        <div className="flex ">
+          <span className="w-32 font-semibold">Wallet Address:</span>
+          <span className="">{wcp?.account}</span>
+        </div>
+        <div className="flex ">
+          <span className="w-32 font-semibold">Location:</span>
+          <span className="">{wcp?.address}</span>
+        </div>
+        <div className="flex ">
+          <span className="w-32 font-semibold">Phone:</span>
+          <span className="">{wcp?.phone}</span>
+        </div>
+        <div className="flex ">
+          <span className="w-32 font-semibold">Email:</span>
+          <span className="">{wcp?.email}</span>
+        </div>
+      </div>
+
+      {submitionsList && (
+        <div className="flex">
+          {loading ? (
+            "loading..."
+          ) : (
+            <div className="w-full">
+              <div className="flex w-full gap-2 justify-between">
                 <button
-                  onClick={() => setFilterVerified(false)}
+                  onClick={() => setFilter("unverified")}
                   className={`${
-                    !filterVerified ? "border-b-2 " : ""
-                  } mb-2 py-4 px-8`}
+                    filter === "unverified" ? "text-error " : ""
+                  } p-4 font-semibold bg-primary rounded-lg w-full`}
                 >
                   Unverified Submitions
                 </button>
                 <button
-                  onClick={() => setFilterVerified(true)}
+                  onClick={() => setFilter("verified")}
                   className={`${
-                    filterVerified ? "border-b-2 " : ""
-                  } mb-2  py-4 px-8`}
+                    filter === "verified" ? "text-blue " : ""
+                  } p-4 bg-primary font-semibold rounded-lg w-full`}
                 >
                   Verified Submitions
                 </button>
               </div>
               <ul>
                 {submitionsList
-                  .filter((submition) => submition.verified === filterVerified)
+                  .filter((submition) => {
+                    if (!filter) return submition;
+                    if (filter === "unverified")
+                      return submition.verified === false;
+                    if (filter === "verified")
+                      return submition.verified === true;
+                  })
                   .map((submition, index, array) => {
                     return (
                       <li
                         key={submition.id}
-                        className="flex p-4 justify-between border gap-6"
+                        className="flex pt-10 pb-[.2rem] justify-between border-b border-[#a2a2a2] gap-6"
                       >
                         <span className="flex flex-col">
                           <span className="text-[0.875rem]">
@@ -90,7 +122,7 @@ export default function Profile({ display, wcp }) {
                               }
                               setDisplayImageList(Number(submition.id));
                             }}
-                            className="flex relative justify-between gap-2 pl-4 pr-2 h-8  bg-gray-300/20 rounded-full"
+                            className="flex relative justify-between gap-2 pl-4 pr-2 h-8  bg-[#D9D9D9] rounded-full"
                           >
                             <span className="text-[0.875rem] my-auto">
                               images
@@ -102,15 +134,15 @@ export default function Profile({ display, wcp }) {
                                 displayImageList === Number(submition.id)
                                   ? "flex "
                                   : "hidden "
-                              } flex-col bg-black top-10 left-0 z-50 absolute`}
+                              } flex-col bg-milk rounded-lg top-10 left-0 z-50 absolute`}
                             >
                               {submition.images.map((image, index) => {
                                 return (
                                   <li
-                                    className="p-2 w-32 border "
+                                    className="p-2 w-32 hover:underline"
                                     key={image.id}
                                   >
-                                    <Link href={image.url}>
+                                    <Link href={image.url} target="_blank">
                                       Image {index + 1}
                                     </Link>
                                   </li>
@@ -119,11 +151,11 @@ export default function Profile({ display, wcp }) {
                             </ul>
                           </button>
                           <button
-                            disabled={filterVerified}
+                            disabled={submition.verified}
                             className={`${
-                              filterVerified
-                                ? "bg-green-500/20 text-green-500 "
-                                : "bg-red-500/20 hover:bg-red-400/40 text-red-500 "
+                              submition.verified
+                                ? " text-blue "
+                                : " text-error hover:bg-error/20 "
                             } px-4 h-8 rounded-full text-[0.875rem]`}
                             onClick={async () => {
                               // Amount we send for each bag collected
@@ -168,19 +200,29 @@ export default function Profile({ display, wcp }) {
                               await client.disconnect();
                             }}
                           >
-                            {filterVerified ? "verified" : "verify"}
+                            {submition.verified ? "verified" : "verify"}
                           </button>
                         </span>
                       </li>
                     );
                   })}
               </ul>
+              <button
+                className="text-[0.75rem] hover:text-blue hover:underline"
+                onClick={() => setRefresh(!refresh)}
+              >
+                refresh list
+              </button>
+              <button
+                className="text-[0.75rem] hover:text-blue hover:underline mx-2"
+                onClick={() => setFilter(null)}
+              >
+                back
+              </button>
             </div>
-            <button onClick={() => setRefresh(!refresh)}>refresh list</button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
-    // </div>
   );
 }

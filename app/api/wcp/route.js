@@ -3,18 +3,21 @@ import { PrismaClient } from "@prisma/client";
 export async function POST(request) {
   try {
     const prisma = new PrismaClient();
-    const { account, name, address } = await request.json();
+    const { account, name, address, phone, email } = await request.json();
 
     const data = await prisma.wasteCollectionPoints.create({
       data: {
         account,
         name,
         address,
+        phone,
+        email,
       },
     });
     await prisma.$disconnect();
     return Response.json(data, { status: 200 });
   } catch (error) {
+    console.log(error);
     return Response.json(error.message, { status: 500 });
   }
 }

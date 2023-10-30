@@ -7,6 +7,7 @@ const initialState = {
   connected: false,
   wallet: null,
   wcpDetails: null, // for if you are a waste collection point
+  wcpList: [],
 };
 
 export const appSlice = createSlice({
@@ -28,10 +29,18 @@ export const appSlice = createSlice({
     updateWCPdetails: (state, action) => {
       return { ...state, wcpDetails: action.payload };
     },
+    updateWCPList: (state, action) => {
+      return { ...state, wcpList: action.payload };
+    },
+    updateWCPList2: (state, action) => {
+      return { ...state, wcpList: [...state.wcpList, action.payload] };
+    },
   },
 });
 
 export const {
+  updateWCPList,
+  updateWCPList2,
   toggleShowAddWallet,
   updateConnected,
   addWallet,

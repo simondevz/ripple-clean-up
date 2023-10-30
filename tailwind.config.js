@@ -13,6 +13,7 @@ module.exports = {
       btnText: "#2D2D2D",
       ash: "#626262",
       blue: "#000AFF",
+      error: "rgb(220 38 38)",
     },
     extend: {
       backgroundImage: {
