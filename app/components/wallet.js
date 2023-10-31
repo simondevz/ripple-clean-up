@@ -98,7 +98,7 @@ export default function Wallet() {
   };
 
   const TransactionList = () => {
-    return <div>Transactions</div>;
+    return <div className="h-[20rem]">Transactions</div>;
   };
 
   const SwapUi = () => {
@@ -195,7 +195,7 @@ export default function Wallet() {
       <div
         className={`${
           hideWallet ? "hidden " : "flex "
-        } p-4 flex-col my-8 rounded-lg bg-white gap-4`}
+        } p-4 flex-col my-auto rounded-lg bg-white gap-4`}
       >
         <AccountInfo />
         <div className="flex bg-[#A2A2A2] w-full h-[0.1rem]">

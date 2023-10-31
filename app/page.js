@@ -3,7 +3,7 @@ import ListWCP from "./components/listWCP";
 
 export default function Home() {
   return (
-    <div className="flex flex-row py-6 px-4">
+    <div className="flex lg:flex-row flex-col py-6 px-4">
       <Analytics />
       <ListWCP />
     </div>

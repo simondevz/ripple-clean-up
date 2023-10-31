@@ -37,7 +37,7 @@ export default function Analytics() {
   }, [refresh]);
 
   return (
-    <div className="flex w-1/2 flex-col gap-4 px-4">
+    <div className="flex lg:w-1/2 w-full flex-col gap-4 mb-4">
       <div className="flex gap-4">
         <div className="p-4 flex w-full rounded-lg bg-primary flex-col">
           <span className="font-semibold">Waste Collected This Week</span>

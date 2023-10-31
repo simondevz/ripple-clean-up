@@ -165,7 +165,7 @@ export default function ListWCP() {
   };
 
   return (
-    <div className={`flex flex-col gap-4 w-1/2`}>
+    <div className={`flex flex-col gap-4 lg:w-1/2 w-full`}>
       <div className="flex flex-col bg-primary gap-8 py-8 px-4 rounded-lg">
         <span className="flex bg-white rounded-full">
           <HiSearch className="my-auto w-4 h-4 ml-4 mr-2 text=[#434343]" />

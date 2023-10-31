@@ -75,7 +75,7 @@ export default function Navbar() {
               <Image src={ripplelogo} alt="cc" className="w-6 h-6 my-auto" />
               <span className="flex my-auto flex-col text-[0.75rem] font-semibold">
                 <span className="leading-4">Ripple</span>
-                <span className="leading-4">Clen Up</span>
+                <span className="leading-4">Clean Up</span>
               </span>
             </div>
             <button
@@ -86,7 +86,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          <span className="flex font-bold my-auto text-[1.5rem] relative left-[-5rem]">
+          <span className="md:flex hidden font-bold my-auto text-[1.5rem] relative left-[-5rem]">
             Dashboard
           </span>
 
