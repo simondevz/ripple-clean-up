@@ -80,7 +80,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => setShow("wcpform")}
-              className="flex px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
+              className="md:flex hidden px-4 my-auto pt-[0.3rem] text-[#252045] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
             >
               Register as a WCP
             </button>
@@ -92,7 +92,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setShow(true)}
-            className="flex  px-6 my-auto pt-[0.3rem] text-[0.875rem] h-8 font-semibold bg-primary rounded-lg"
+            className="flex  px-6 my-auto pt-[0.3rem] md:text-[0.875rem] text-[0.75rem] h-8 font-semibold bg-primary rounded-lg"
           >
             {connected ? "Wallet" : "Connect Wallet"}
           </button>

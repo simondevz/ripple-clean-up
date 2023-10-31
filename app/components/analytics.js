@@ -39,18 +39,18 @@ export default function Analytics() {
   return (
     <div className="flex lg:w-1/2 w-full flex-col gap-4 mb-4">
       <div className="flex gap-4">
-        <div className="p-4 flex w-full rounded-lg bg-primary flex-col">
+        <div className="p-4 flex md:text-base text-[0.75rem] w-full rounded-lg bg-primary flex-col">
           <span className="font-semibold">Waste Collected This Week</span>
           <span>10,749+</span>
         </div>
-        <div className="p-4 flex w-full rounded-lg bg-primary flex-col">
+        <div className="p-4 flex w-full md:text-base text-[0.75rem] rounded-lg bg-primary flex-col">
           <span className="font-semibold">Amount Rewarded</span>
           <span>$3,504.25+</span>
         </div>
       </div>
 
       <div className="flex flex-col bg-primary rounded-lg px-6 ">
-        <span className="mt-6 font-semibold">
+        <span className="mt-6 md:text-base text-[0.75rem] font-semibold">
           Recent Rewards for Recorded Wastes
         </span>
 
@@ -70,7 +70,7 @@ export default function Analytics() {
 
             return (
               <li
-                className="border-b border-[#a2a2a2] flex justify-between text-[0.875rem] pt-8 pb-2 mx-2"
+                className="border-b border-[#a2a2a2] w-[30rem] flex justify-between md:text-[0.875rem] text-[0.5rem] pt-8 pb-2 mx-2"
                 key={transaction.tx.hash}
               >
                 <span className="flex gap-2">
