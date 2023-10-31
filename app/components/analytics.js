@@ -70,7 +70,7 @@ export default function Analytics() {
 
             return (
               <li
-                className="border-b border-[#a2a2a2] w-[30rem] flex justify-between md:text-[0.875rem] text-[0.5rem] pt-8 pb-2 mx-2"
+                className="border-b border-[#a2a2a2] min-w-[30rem] flex justify-between md:text-[0.875rem] text-[0.75rem] pt-8 pb-2 mx-2"
                 key={transaction.tx.hash}
               >
                 <span className="flex gap-2">

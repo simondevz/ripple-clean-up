@@ -10,10 +10,13 @@ import { HiSearch } from "react-icons/hi";
 import { updateWCPList } from "../reduxState/slice";
 import { VscLoading } from "react-icons/vsc";
 import { RiArrowDownSFill, RiArrowUpSFill } from "react-icons/ri";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocation } from "react-router-dom";
 
 export default function ListWCP() {
   const [show, setShow] = useState("");
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [profileWCP, setProfileWCP] = useState(null);
   const { wallet, connected, wcpDetails, wcpList } = useSelector(
@@ -36,10 +39,15 @@ export default function ListWCP() {
     const [files, setFiles] = useState([]);
     const [number, setNumber] = useState("");
     const [selectedWCP, setSelectedWCP] = useState(null);
+    // const location = useLocation();
 
     const [displayList, setDisplayList] = useState(false);
     const [loading, setloading] = useState(false);
     const [errMsg, setErrMsg] = useState("");
+
+    // useEffect(() => {
+    //   if (location.hash !== "#submittionform") setShow("");
+    // }, [location.hash]);
 
     return (
       <div className="flex flex-col gap-6 bg-white rounded-lg py-12 px-16 my-auto">
@@ -218,7 +226,10 @@ export default function ListWCP() {
               return;
             }
 
-            setShow("submitform");
+            router.push("#submittionform");
+            setTimeout(() => {
+              setShow("submitform");
+            }, 1000);
           }}
           className="bg-primary p-8 w-full rounded-lg flex"
         >
