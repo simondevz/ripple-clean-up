@@ -112,6 +112,7 @@ export default function Signup({ onclick }) {
                   const wallet = Wallet.fromSeed(secret);
                   dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
                   dispatch(toggleConnected());
+                  saveTolocalhost(secret);
                   router.replace("/dashboard#wallet");
                   console.log(wallet);
 

@@ -15,7 +15,9 @@ export default function Analytics() {
     const getTransactions = async () => {
       try {
         const wallet = Wallet.fromSeed(process.env.NEXT_PUBLIC_COMPANY_SEED);
-        const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL);
+        const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL, {
+          connectionTimeout: 20000,
+        });
 
         // Wait for the client to connect
         await client.connect();

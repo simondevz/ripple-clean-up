@@ -48,13 +48,16 @@ export default function Navbar() {
         const seed = crypto.decrypt(encrypted_seed);
         if (seed) {
           try {
-            const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL);
+            const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL, {
+              connectionTimeout: 20000,
+            });
             await client.connect();
 
             // Create wallet and update the global state
             const wallet = XrplWallet.fromSeed(seed);
             dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
             dispatch(updateConnected(true));
+            console.log(wallet);
 
             // await client.disconnect();
           } catch (error) {
@@ -119,7 +122,10 @@ export default function Navbar() {
             >
               <li className="flex w-full rounded-lg hover:bg-milk p-2">
                 <span
-                  onClick={() => setShow("wcpform")}
+                  onClick={() => {
+                    setShow("wcpform");
+                    setOpenMenu(!openMenu);
+                  }}
                   className="flex my-auto whitespace-nowrap text-[#252045] text-[0.75rem] font-semibold"
                 >
                   Register as a WCP
@@ -127,7 +133,12 @@ export default function Navbar() {
               </li>
               <li className="flex w-full rounded-lg hover:bg-milk p-2">
                 <span
-                  onClick={() => setShow("wcpform")}
+                  onClick={() => {
+                    localStorage.removeItem("ripple_clen_up");
+                    dispatch(updateConnected(false));
+                    dispatch(addWallet(null));
+                    setOpenMenu(!openMenu);
+                  }}
                   className="flex whitespace-nowrap my-auto text-[#252045] text-[0.75rem] font-semibold "
                 >
                   Disconnect Wallet

@@ -19,17 +19,22 @@ import {
   dropsToXrp,
 } from "xrpl";
 import { useRouter } from "next/navigation";
+import { ShorthenedAddress } from "./utils";
+import { TbReload } from "react-icons/tb";
+import { VscLoading } from "react-icons/vsc";
 
 export default function Wallet({ onclick }) {
   const [hideWallet, setHideWallet] = useState(false);
   const [showSend, setShowSend] = useState(false);
+  const [refreshBalance, setRefreshBalance] = useState(false);
+
+  const [refresh, setRefresh] = useState(false);
   const [balance, setBalance] = useState(0);
   const router = useRouter();
 
-  const [amount, setAmount] = useState("");
-  const [sendTo, setSendTo] = useState("");
   const [locationHash, setLocationHash] = useState("#wallet");
   const { wallet } = useSelector((state) => state.app);
+  const [transactionsList, setTransactionList] = useState([]);
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -55,7 +60,7 @@ export default function Wallet({ onclick }) {
       }
     };
     fetchBalance();
-  }, [wallet.classicAddress]);
+  }, [wallet.classicAddress, refreshBalance]);
 
   useEffect(() => {
     function handleHashChange() {
@@ -70,6 +75,35 @@ export default function Wallet({ onclick }) {
       window.removeEventListener("hashchange", handleHashChange);
     };
   }, [locationHash]);
+
+  useEffect(() => {
+    const getTransactions = async () => {
+      try {
+        // const wallet = Wallet.fromSeed(process.env.NEXT_PUBLIC_COMPANY_SEED);
+        const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL, {
+          connectionTimeout: 10000,
+        });
+
+        // Wait for the client to connect
+        await client.connect();
+
+        // Get the transaction history
+        const payload = {
+          command: "account_tx",
+          account: wallet.classicAddress,
+          limit: 20,
+        };
+
+        const { result } = await client.request(payload);
+        setTransactionList(result.transactions);
+
+        await client.disconnect();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTransactions();
+  }, [refresh]);
 
   const AccountInfo = () => {
     return (
@@ -124,7 +158,65 @@ export default function Wallet({ onclick }) {
   };
 
   const TransactionList = () => {
-    return <div className="h-[20rem]">Transactions</div>;
+    const [refreshClicked, setRefreshClicked] = useState(false);
+    return (
+      <div className="flex lg:w-1/2 w-full flex-col gap-2 mb-2">
+        <span className="mt-2 md:text-base text-[0.75rem] justify-between flex font-semibold">
+          <span>Recent Transactions</span>
+          <button
+            className={refreshClicked ? "animate-spin-once" : ""}
+            onClick={() => {
+              setRefreshClicked(true);
+              setRefresh(!refresh);
+              setTimeout(() => {
+                setRefreshClicked(false);
+              }, 1000);
+            }}
+          >
+            <TbReload />
+          </button>
+        </span>
+
+        <ul className="flex gap-2 flex-col py-2 overflow-x-auto rounded-lg bg-primary p-2 h-[15rem]">
+          {transactionsList.map((transaction) => {
+            // to check if the person is sending or recieving
+            const type =
+              transaction.tx.Account === wallet.classicAddress
+                ? "Sent"
+                : "Recieved";
+            const amount = dropsToXrp(Number(transaction.tx.Amount));
+
+            return (
+              <li
+                className="border-b border-[#a2a2a2] flex justify-between md:text-[0.875rem] text-[0.75rem] pt-8 pb-2 mx-2"
+                key={transaction.tx.hash}
+              >
+                <span>{type}</span>
+                <span className="flex gap-4">
+                  <span className="text-blue">
+                    {type === "Recieved" ? (
+                      <span>+{amount}xrp</span>
+                    ) : (
+                      <span>-{amount}xrp</span>
+                    )}
+                  </span>
+                </span>
+                <span>{type === "Recieved" ? "from" : "to"}</span>
+                <span className="flex gap-2">
+                  <ShorthenedAddress
+                    address={
+                      type === "Recieved"
+                        ? transaction.tx.Account
+                        : transaction.tx.Destination
+                    }
+                  />
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   };
 
   const SwapUi = () => {
@@ -154,6 +246,10 @@ export default function Wallet({ onclick }) {
   };
 
   const SendUi = () => {
+    const [amount, setAmount] = useState("");
+    const [sendTo, setSendTo] = useState("");
+    const [loading, setLoading] = useState(false);
+
     return (
       <div
         className={`${
@@ -176,9 +272,13 @@ export default function Wallet({ onclick }) {
         <div className="flex gap-4">
           <button
             disabled={
-              isValidClassicAddress(sendTo) && Number(amount) ? false : true
+              (isValidClassicAddress(sendTo) && Number(amount)
+                ? false
+                : true) || loading
             } // Style diffrently and add validation
             onClick={async () => {
+              // Send xrp to another address
+              setLoading(true);
               const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL, {
                 connectionTimeout: 10000,
               });
@@ -192,16 +292,23 @@ export default function Wallet({ onclick }) {
                 Account: txWallet.classicAddress,
               };
 
-              const response = await client.submit(tx, { wallet: txWallet });
+              await client.submit(tx, { wallet: txWallet });
               setHideWallet(false);
               setShowSend(false);
-              console.log(response);
+
               await client.disconnect();
+              setLoading(false);
+              setRefreshBalance(!refreshBalance);
             }}
             className="flex p-4 rounded-lg bg-primary w-full"
           >
-            <span className="mx-auto">Send</span>
+            {loading ? (
+              <VscLoading className="animate-spin mx-auto text-white" />
+            ) : (
+              <span className="mx-auto">Send</span>
+            )}
           </button>
+
           <button
             className="flex p-4 rounded-lg bg-primary w-full"
             onClick={() => {
