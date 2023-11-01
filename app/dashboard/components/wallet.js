@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { useState } from "react";
-import { RiArrowDownLine, RiArrowUpLine } from "react-icons/ri";
+import {
+  RiArrowDownLine,
+  RiArrowLeftDoubleFill,
+  RiArrowUpLine,
+} from "react-icons/ri";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { LuMoreVertical } from "react-icons/lu";
 import { IoIosArrowBack } from "react-icons/io";
@@ -14,14 +18,17 @@ import {
   Wallet as XrplWallet,
   dropsToXrp,
 } from "xrpl";
+import { useRouter } from "next/navigation";
 
-export default function Wallet() {
+export default function Wallet({ onclick }) {
   const [hideWallet, setHideWallet] = useState(false);
   const [showSend, setShowSend] = useState(false);
   const [balance, setBalance] = useState(0);
+  const router = useRouter();
 
   const [amount, setAmount] = useState("");
   const [sendTo, setSendTo] = useState("");
+  const [locationHash, setLocationHash] = useState("#wallet");
   const { wallet } = useSelector((state) => state.app);
 
   useEffect(() => {
@@ -50,14 +57,33 @@ export default function Wallet() {
     fetchBalance();
   }, [wallet.classicAddress]);
 
+  useEffect(() => {
+    function handleHashChange() {
+      if (window.location.hash !== "#wallet") {
+        setLocationHash("");
+        onclick();
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [locationHash]);
+
   const AccountInfo = () => {
     return (
       <div className="flex flex-col gap-6">
         <div className="flex justify-between gap-44">
-          <span className="flex text-[0.875rem] text-ash">
-            <IoIosArrowBack className="my-auto font-semibold" />
-            <span className="my-auto">COIN</span>
-          </span>
+          <button
+            onClick={() => {
+              router.replace("/dashboard");
+              onclick();
+            }}
+            className="flex text-[0.875rem] text-ash"
+          >
+            <RiArrowLeftDoubleFill className="my-auto font-semibold h-4 w-4" />
+          </button>
           <span className="flex text-[0.75rem] gap-2">
             <span className="text-ash">$0.56</span>
             <span className="text-blue">+0.97%</span>

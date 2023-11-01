@@ -58,6 +58,7 @@ export async function GET(request) {
     await prisma.$disconnect();
     return Response.json(data, { status: 200 });
   } catch (error) {
+    console.log(error);
     return Response.json(error.message, { status: 500 });
   }
 }

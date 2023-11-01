@@ -17,6 +17,7 @@ import Image from "next/image";
 import ripplelogo from "../../../public/clenUpLogo.png";
 import WcpForm from "./wcpForm";
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 // Idea: I could hash the users secret and save it on there localstorage
 //   that way i can decode it later, or better yet use jwt for that.
@@ -25,6 +26,7 @@ export default function Navbar() {
   const [show, setShow] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const { connected, wallet } = useSelector((state) => state.app);
+  const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,29 +41,29 @@ export default function Navbar() {
     if (wallet?.classicAddress) getWCPDetails();
   }, [dispatch, wallet?.classicAddress]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const encrypted_seed = localStorage.getItem("ripple_clen_up");
-  //     if (encrypted_seed) {
-  //       const seed = crypto.decrypt(encrypted_seed);
-  //       if (seed) {
-  //         try {
-  //           const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL);
-  //           await client.connect();
+  useEffect(() => {
+    (async () => {
+      const encrypted_seed = localStorage.getItem("ripple_clen_up");
+      if (encrypted_seed) {
+        const seed = crypto.decrypt(encrypted_seed);
+        if (seed) {
+          try {
+            const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL);
+            await client.connect();
 
-  //           // Create wallet and update the global state
-  //           const wallet = XrplWallet.fromSeed(seed);
-  //           dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
-  //           dispatch(updateConnected(true));
+            // Create wallet and update the global state
+            const wallet = XrplWallet.fromSeed(seed);
+            dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
+            dispatch(updateConnected(true));
 
-  //           // await client.disconnect();
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       }
-  //     }
-  //   })();
-  // }, []);
+            // await client.disconnect();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    })();
+  }, []);
 
   const onclick = () => {
     setShow(false);
@@ -94,7 +96,10 @@ export default function Navbar() {
 
           <div className="flex gap-2 relative">
             <button
-              onClick={() => setShow(true)}
+              onClick={() => {
+                setShow(true);
+                router.push(`/dashboard#connectwallet`);
+              }}
               className="flex  px-6 my-auto md:pt-[0.3rem] pt-[0.4rem] md:text-[0.875rem] text-[0.75rem] h-8 font-semibold bg-primary rounded-lg"
             >
               {connected ? "Wallet" : "Connect Wallet"}
@@ -138,9 +143,9 @@ export default function Navbar() {
           show === "wcpform" ? (
             <WcpForm onclick={onclick} wallet={wallet} />
           ) : connected ? (
-            <Wallet />
+            <Wallet onclick={onclick} />
           ) : (
-            <Signup />
+            <Signup onclick={onclick} />
           )
         }
         onclick={onclick}

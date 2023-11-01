@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWallet,
@@ -7,18 +7,39 @@ import {
 } from "../../reduxState/slice";
 import { Client, Wallet, isValidSecret } from "xrpl";
 import Cryptr from "cryptr";
+import { useRouter } from "next/navigation";
+import { RiCloseFill } from "react-icons/ri";
 
 export const crypto = new Cryptr(process.env.NEXT_PUBLIC_ENCRYPT_SECRET);
 
-export default function Signup() {
+export default function Signup({ onclick }) {
   const [loading, setLoading] = useState(false);
   const [secret, setSecret] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+
+  const [locationHash, setLocationHash] = useState("#connectwallet");
   const { showAddWallet } = useSelector((state) => state.app);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const Notification = () => {
     return <div></div>;
   };
+
+  useEffect(() => {
+    function handleHashChange() {
+      if (window.location.hash !== "#connectwallet") {
+        setLocationHash("");
+        setErrMsg("");
+        onclick();
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [locationHash]);
 
   const saveTolocalhost = (seed) => {
     const encrypted_seed = crypto.encrypt(seed);
@@ -26,7 +47,18 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex flex-col gap-8 p-16 bg-white my-auto z-50 rounded-lg">
+    <div className="flex relative flex-col md:gap-8 gap-6 md:p-16 p-12 bg-white my-auto z-50 rounded-lg">
+      <RiCloseFill
+        onClick={() => {
+          router.back();
+          setErrMsg("");
+          onclick();
+        }}
+        className="absolute right-2 top-2 text-btnText h-6 w-6"
+      />
+      <span className="md:text-[0.75rem] text-[0.65rem] text-error">
+        {errMsg}
+      </span>
       <>
         <button
           disabled={loading ? true : false}
@@ -49,7 +81,7 @@ export default function Signup() {
             }
             setLoading(false);
           }}
-          className="flex p-8 font-semibold text-[0.875rem] bg-primary rounded-lg text-btnText "
+          className="flex md:p-8 p-6 font-semibold md:text-[0.875rem] text-[0.75rem] bg-primary rounded-lg text-btnText "
         >
           <span className="mx-auto">
             {loading ? "loading..." : "Create New Wallet!"}
@@ -60,7 +92,7 @@ export default function Signup() {
           <>
             <input
               onChange={(event) => setSecret(event.target.value)}
-              className="p-4 border-4 rounded-lg border-primary bg-transparent focus:outline-none"
+              className="md:p-4 p-2 md:border-4 border-2 rounded-lg border-primary  md:text-[0.875rem] text-[0.75rem] bg-transparent focus:outline-none"
               placeholder="Enter Secret"
               value={secret}
             />
@@ -71,22 +103,29 @@ export default function Signup() {
                 setLoading(true);
 
                 try {
-                  const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL);
+                  const client = new Client(process.env.NEXT_PUBLIC_XRPL_URL, {
+                    connectionTimeout: 10000,
+                  });
                   await client.connect();
 
                   // Create wallet and update the global state
                   const wallet = Wallet.fromSeed(secret);
                   dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
                   dispatch(toggleConnected());
+                  router.replace("/dashboard#wallet");
                   console.log(wallet);
 
                   await client.disconnect();
                 } catch (error) {
                   console.log(error);
+                  const message = error?.message.includes("5000")
+                    ? "Connection Timed out. Check your networt and try again..."
+                    : "Something went Wrong. Please try again.";
+                  setErrMsg(message);
                 }
                 setLoading(false);
               }}
-              className="flex px-8 py-4 text-center font-semibold text-[0.875rem] bg-primary rounded-lg text-btnText "
+              className="flex md:px-8 px-4 md:py-4 py-2 text-center font-semibold md:text-[0.875rem] text-[0.75rem] bg-primary rounded-lg text-btnText "
             >
               <span className="mx-auto">Connect Wallet</span>
             </button>
@@ -96,7 +135,7 @@ export default function Signup() {
             onClick={() => {
               dispatch(toggleShowAddWallet(true));
             }}
-            className="flex p-8 font-semibold text-[0.875rem] bg-primary rounded-lg text-btnText "
+            className="flex md:p-8 p-6 font-semibold md:text-[0.875rem] text-[0.75rem] bg-primary rounded-lg text-btnText "
           >
             Add Existing Wallet
           </button>
