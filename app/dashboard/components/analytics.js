@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Client, Wallet, dropsToXrp } from "xrpl";
 import { GetTimeAgo, ShorthenedAddress } from "./utils";
+import { TbReload } from "react-icons/tb";
 
 export default function Analytics() {
   const [transactionsList, setTransactionList] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [refreshClicked, setRefreshClicked] = useState(false);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -50,8 +52,20 @@ export default function Analytics() {
       </div>
 
       <div className="flex flex-col bg-primary rounded-lg px-6 ">
-        <span className="mt-6 md:text-base text-[0.75rem] font-semibold">
-          Recent Rewards for Recorded Wastes
+        <span className="mt-6 md:text-base text-[0.75rem] justify-between flex font-semibold">
+          <span>Recent Rewards for Recorded Wastes</span>
+          <button
+            className={refreshClicked ? "animate-spin-once" : ""}
+            onClick={() => {
+              setRefreshClicked(true);
+              setRefresh(!refresh);
+              setTimeout(() => {
+                setRefreshClicked(false);
+              }, 1000);
+            }}
+          >
+            <TbReload />
+          </button>
         </span>
 
         <ul className="flex gap-2 flex-col py-4 overflow-x-auto h-[19rem]">
@@ -88,7 +102,6 @@ export default function Analytics() {
             );
           })}
         </ul>
-        <button onClick={() => setRefresh(!refresh)}>refresh list</button>
       </div>
 
       <button className="w-full bg-primary rounded-lg p-8">

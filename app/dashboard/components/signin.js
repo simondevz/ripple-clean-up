@@ -4,7 +4,7 @@ import {
   addWallet,
   toggleConnected,
   toggleShowAddWallet,
-} from "../reduxState/slice";
+} from "../../reduxState/slice";
 import { Client, Wallet, isValidSecret } from "xrpl";
 import Cryptr from "cryptr";
 

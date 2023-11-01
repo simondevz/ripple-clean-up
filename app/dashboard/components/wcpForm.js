@@ -5,7 +5,7 @@ import validator from "validator";
 import { VscLoading } from "react-icons/vsc";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { updateWCPList2 } from "../reduxState/slice";
+import { updateWCPList2 } from "../../reduxState/slice";
 
 const WcpForm = ({ onclick, wallet }) => {
   const [name, setName] = useState("");

@@ -24,6 +24,9 @@ module.exports = {
       error: "rgb(220 38 38)",
     },
     extend: {
+      animation: {
+        "spin-once": "spin 0.5s linear",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

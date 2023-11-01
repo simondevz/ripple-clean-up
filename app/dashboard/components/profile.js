@@ -2,12 +2,13 @@
 
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { RiArrowDownSFill } from "react-icons/ri";
+import { RiArrowDownSFill, RiCloseFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Client, Wallet, xrpToDrops } from "xrpl";
 
-export default function Profile({ wcp }) {
+export default function Profile({ wcp, onclick }) {
   const [refresh, setRefresh] = useState(false);
   const [loading, setloading] = useState(false);
   const { wallet } = useSelector((state) => state.app);
@@ -15,6 +16,7 @@ export default function Profile({ wcp }) {
   const [filter, setFilter] = useState(false);
   const [displayImageList, setDisplayImageList] = useState(0);
   const [submitionsList, setSubmitionsList] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     // only runs if wallet address === wcp address
@@ -37,31 +39,51 @@ export default function Profile({ wcp }) {
     }
   }, [refresh, wcp?.account, wallet?.classicAddress]);
 
+  useEffect(() => {
+    function handleHashChange() {
+      if (window.location.hash !== "#profile") {
+        onclick();
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
   return (
-    <div className="bg-white rounded-lg py-4 px-8 justify-center my-auto flex flex-col gap-4">
-      <h1 className="my-4 mx-auto font-semibold">
+    <div className="bg-white relative rounded-lg md:py-4 py-2 md:px-8 px-2 justify-center my-auto flex flex-col gap-4">
+      <RiCloseFill
+        onClick={() => {
+          router.replace("/dashboard#submittionpage");
+          onclick();
+        }}
+        className="absolute right-2 top-2 text-btnText h-6 w-6"
+      />
+      <h1 className="md:my-4 md:text-base text-[0.875rem] mt-2 mx-auto font-semibold">
         Waste Collection Point Profile
       </h1>
-      <div className="flex flex-col gap-4 rounded-lg bg-primary p-4 text-[0.875rem]">
+      <div className="flex flex-col md:gap-4 gap-2 rounded-lg bg-primary md:p-4 p-2 md:text-[0.875rem] text-[0.65rem]">
         <div className="flex ">
-          <span className="w-32 font-semibold">Name:</span>
-          <span className="">{wcp?.name}</span>
+          <span className="md:w-32 w-24  font-semibold">Name:</span>
+          <span className="text-[0.65rem]">{wcp?.name}</span>
         </div>
         <div className="flex ">
-          <span className="w-32 font-semibold">Wallet Address:</span>
-          <span className="">{wcp?.account}</span>
+          <span className="md:w-32 w-24 font-semibold">Wallet Address:</span>
+          <span className="text-[0.65rem]">{wcp?.account}</span>
         </div>
         <div className="flex ">
-          <span className="w-32 font-semibold">Location:</span>
-          <span className="">{wcp?.address}</span>
+          <span className="md:w-32 w-24  font-semibold">Location:</span>
+          <span className="text-[0.65rem]">{wcp?.address}</span>
         </div>
         <div className="flex ">
-          <span className="w-32 font-semibold">Phone:</span>
-          <span className="">{wcp?.phone}</span>
+          <span className="md:w-32 w-24  font-semibold">Phone:</span>
+          <span className="text-[0.65rem]">{wcp?.phone}</span>
         </div>
         <div className="flex ">
-          <span className="w-32 font-semibold">Email:</span>
-          <span className="">{wcp?.email}</span>
+          <span className="md:w-32 w-24  font-semibold">Email:</span>
+          <span className="text-[0.65rem]">{wcp?.email}</span>
         </div>
       </div>
 
@@ -76,7 +98,7 @@ export default function Profile({ wcp }) {
                   onClick={() => setFilter("unverified")}
                   className={`${
                     filter === "unverified" ? "text-error " : ""
-                  } p-4 font-semibold bg-primary rounded-lg w-full`}
+                  } p-4 md:text-base text-[0.75rem] font-semibold bg-primary rounded-lg w-full`}
                 >
                   Unverified Submitions
                 </button>
@@ -84,7 +106,7 @@ export default function Profile({ wcp }) {
                   onClick={() => setFilter("verified")}
                   className={`${
                     filter === "verified" ? "text-blue " : ""
-                  } p-4 bg-primary font-semibold rounded-lg w-full`}
+                  } p-4  md:text-base text-[0.75rem] bg-primary font-semibold rounded-lg w-full`}
                 >
                   Verified Submitions
                 </button>
@@ -102,18 +124,21 @@ export default function Profile({ wcp }) {
                     return (
                       <li
                         key={submition.id}
-                        className="flex pt-10 pb-[.2rem] justify-between border-b border-[#a2a2a2] gap-6"
+                        className="flex md:pt-10 pt-6 pb-[.2rem] justify-between border-b border-[#a2a2a2] md:gap-6 gap-2"
                       >
                         <span className="flex flex-col">
-                          <span className="text-[0.875rem]">
-                            Bags Submitted: {submition.number}
+                          <span className="text-[0.65rem] ">
+                            <span className="font-semibold">
+                              Bags Submitted:
+                            </span>
+                            <span> {submition.number}</span>
                           </span>
-                          <span className="text-[0.75rem]">
+                          <span className="text-[0.65rem]">
                             Account: {submition.account}
                           </span>
                         </span>
 
-                        <span className="flex gap-4 justify-between my-auto">
+                        <span className="flex nd:gap-4 gap-2 justify-between my-auto">
                           <button
                             onClick={() => {
                               if (displayImageList === Number(submition.id)) {
@@ -122,9 +147,9 @@ export default function Profile({ wcp }) {
                               }
                               setDisplayImageList(Number(submition.id));
                             }}
-                            className="flex relative justify-between gap-2 pl-4 pr-2 h-8  bg-[#D9D9D9] rounded-full"
+                            className="flex relative justify-between gap-2 md:pl-4 pl-2 pr-2 md:h-8  bg-[#D9D9D9] rounded-full"
                           >
-                            <span className="text-[0.875rem] my-auto">
+                            <span className="text-[0.65rem] my-auto">
                               images
                             </span>
                             <RiArrowDownSFill className="my-auto" />
@@ -156,7 +181,7 @@ export default function Profile({ wcp }) {
                               submition.verified
                                 ? " text-blue "
                                 : " text-error hover:bg-error/20 "
-                            } px-4 h-8 rounded-full text-[0.875rem]`}
+                            } px-4 h-8 rounded-full text-[0.65rem]`}
                             onClick={async () => {
                               // Amount we send for each bag collected
                               const perBag = Number(

@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/navbar";
+// import Navbar from "./components/navbar";
 import { Providers } from "./reduxState/provider";
 import { store } from "./reduxState/store";
 
@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers store={store}>
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
         </Providers>
       </body>

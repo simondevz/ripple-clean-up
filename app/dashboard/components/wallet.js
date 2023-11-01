@@ -6,7 +6,7 @@ import { BiMoneyWithdraw } from "react-icons/bi";
 import { LuMoreVertical } from "react-icons/lu";
 import { IoIosArrowBack } from "react-icons/io";
 import { useSelector } from "react-redux";
-import ripplelogo from "../../public/clenUpLogo.png";
+import ripplelogo from "../../../public/clenUpLogo.png";
 import {
   Client,
   isValidClassicAddress,
@@ -84,14 +84,14 @@ export default function Wallet() {
             <RiArrowDownLine className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
             <span>Recieve</span>
           </button>
-          <button className="flex flex-col mx-auto gap-2">
+          {/* <button className="flex flex-col mx-auto gap-2">
             <BiMoneyWithdraw className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
             <span>Withdraw</span>
           </button>
           <button className="flex flex-col mx-auto gap-2">
             <LuMoreVertical className="w-10 h-10 p-2 bg-primary rounded-full  mx-auto" />
             <span>More</span>
-          </button>
+          </button> */}
         </div>
       </div>
     );
