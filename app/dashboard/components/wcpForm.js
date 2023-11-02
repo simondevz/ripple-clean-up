@@ -1,35 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validator from "validator";
 import { VscLoading } from "react-icons/vsc";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateWCPList2 } from "../../reduxState/slice";
+import { RiCloseFill } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const WcpForm = ({ onclick, wallet }) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter();
 
   const [location, setLocation] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    function handleHashChange() {
+      if (window.location.hash !== "#wcpform") {
+        onclick();
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col gap-4 bg-white rounded-lg px-12 pt-16 pb-8 my-auto">
-      <span className="text-[0.75rem] text-error">{errMsg}</span>
+    <div className="flex relative flex-col md:gap-4 gap-2 bg-white rounded-lg md:px-12 px-6 md:pt-16 pt-8 md:pb-8 pb-4 my-auto">
+      <RiCloseFill
+        onClick={() => {
+          router.replace("/dashboard");
+          onclick();
+        }}
+        className="absolute right-2 top-2 text-btnText h-6 w-6"
+      />
+      <span className="md:text-[0.75rem] text-[0.65rem] text-error">
+        {errMsg}
+      </span>
       <input
         onChange={(event) => setName(event.target.value)}
-        className="border-4 border-primary focus:outline-none rounded-lg bg-transparent p-4"
+        className="md:border-4 border-2 border-primary focus:outline-none rounded-lg bg-transparent md:text-[0.875rem] text-[0.75rem] md:p-4 p-2"
         placeholder="Name"
         value={name}
       />
       {/* TODO: implement google api here */}
       <input
         onChange={(event) => setLocation(event.target.value)}
-        className="border-4 border-primary focus:outline-none rounded-lg bg-transparent p-4"
+        className="md:border-4 border-2 border-primary focus:outline-none rounded-lg bg-transparent md:text-[0.875rem] text-[0.75rem] md:p-4 p-2"
         placeholder="Address"
         value={location}
       />
@@ -40,7 +65,7 @@ const WcpForm = ({ onclick, wallet }) => {
           (validator.isEmail(email) || !email
             ? "border-primary "
             : "border-error/70 ") +
-          "border-4 focus:outline-none rounded-lg bg-transparent p-4"
+          "md:border-4 border-2 focus:outline-none rounded-lg bg-transparent md:text-[0.875rem] text-[0.75rem] md:p-4 p-2"
         }
         placeholder="Email"
         value={email}
@@ -48,7 +73,7 @@ const WcpForm = ({ onclick, wallet }) => {
       <input
         onChange={(event) => setPhone(event.target.value)}
         className={
-          "border-primary border-4 focus:outline-none rounded-lg bg-transparent p-4"
+          "border-primary md:border-4 border-2 focus:outline-none rounded-lg bg-transparent md:text-[0.875rem] text-[0.75rem] md:p-4 p-2"
         }
         placeholder="Phone Number"
         value={phone}
@@ -84,7 +109,7 @@ const WcpForm = ({ onclick, wallet }) => {
             console.log(error);
           }
         }}
-        className="p-4 bg-primary rounded-lg font-semibold disabled:border-red-500"
+        className="p-4 bg-primary rounded-lg md:text-[0.875rem] text-[0.75rem] font-semibold disabled:border-red-500"
       >
         {loading ? (
           <VscLoading className="animate-spin mx-auto text-white" />

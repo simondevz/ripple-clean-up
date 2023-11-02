@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 
 export default function ListWCP() {
   const [show, setShow] = useState("");
+  const [filter, setfilter] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -196,37 +197,46 @@ export default function ListWCP() {
   };
 
   return (
-    <div className={`flex flex-col gap-4 lg:w-1/2 w-full`}>
+    <div className={`flex flex-col gap-4 w-full`}>
       <div className="flex flex-col bg-primary gap-8 py-8 px-4 rounded-lg">
         <span className="flex bg-white rounded-full">
           <HiSearch className="my-auto w-4 h-4 ml-4 mr-2 text=[#434343]" />
           <input
+            onChange={(event) => setfilter(event.target.value)}
             className="p-[.3rem] bg-transparent w-full rounded-full md:text-[0.875rem] text-[0.75rem] focus:outline-none"
             placeholder="Search Waste Collection Points"
+            value={filter}
           />
         </span>
 
         <ul className="flex gap-2 flex-col md:py-4 py-2 overflow-x-auto md:h-[21rem] h-[17rem]">
-          {wcpList.map((wcp) => {
-            return (
-              <li
-                onClick={() => {
-                  setShow("profile");
-                  setProfileWCP(wcp);
-                  router.push("/dashboard#profile");
-                }}
-                className="border-b border-[#A2A2A2] py-2 flex gap-2 flex-col"
-                key={wcp.id}
-              >
-                <span className="md:text-[0.875rem] text-[0.75rem] text-btnText font-semibold">
-                  {wcp.name}
-                </span>
-                <span className="md:text-[0.75rem] text-[0.65rem] text-btnText">
-                  {wcp.address}
-                </span>
-              </li>
-            );
-          })}
+          {wcpList
+            .filter((item) => {
+              return (
+                item.name.toLowerCase().includes(filter.toLowerCase()) ||
+                item.address.toLowerCase().includes(filter.toLowerCase())
+              );
+            })
+            .map((wcp) => {
+              return (
+                <li
+                  onClick={() => {
+                    setShow("profile");
+                    setProfileWCP(wcp);
+                    router.push("/dashboard#profile");
+                  }}
+                  className="border-b border-[#A2A2A2] py-2 flex gap-2 flex-col"
+                  key={wcp.id}
+                >
+                  <span className="md:text-[0.875rem] text-[0.75rem] text-btnText font-semibold">
+                    {wcp.name}
+                  </span>
+                  <span className="md:text-[0.75rem] text-[0.65rem] text-btnText">
+                    {wcp.address}
+                  </span>
+                </li>
+              );
+            })}
         </ul>
       </div>
 

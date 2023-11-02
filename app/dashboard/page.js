@@ -29,11 +29,11 @@ export default function Dashboard() {
   }, [locationHash]);
 
   return (
-    <div className="flex lg:flex-row flex-col py-6 px-4">
+    <div className="flex md:flex-row flex-col md:gap-4 py-6 px-4">
       <div
         className={
           (locationHash === "#analytics" ? "" : "justify-end ") +
-          "flex w-full py-2 mt-[-2rem]"
+          "flex w-full py-2 md:hidden mt-[-2rem]"
         }
       >
         <button
@@ -63,10 +63,20 @@ export default function Dashboard() {
           )}
         </button>
       </div>
-      <div className={locationHash === "#analytics" ? "flex " : "hidden "}>
+      <div
+        className={
+          (locationHash === "#analytics" ? "flex " : "hidden ") +
+          "md:flex md:w-1/2"
+        }
+      >
         <Analytics />
       </div>
-      <div className={locationHash === "#submittionpage" ? "flex " : "hidden "}>
+      <div
+        className={
+          (locationHash === "#submittionpage" ? "flex " : "hidden ") +
+          "md:flex md:w-1/2"
+        }
+      >
         <ListWCP />
       </div>
     </div>

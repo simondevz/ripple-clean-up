@@ -183,7 +183,7 @@ export default function Profile({ wcp, onclick }) {
                               submition.verified
                                 ? " text-blue "
                                 : " text-error hover:bg-error/20 "
-                            } px-4 h-8 rounded-full text-[0.65rem]`}
+                            } px-4 md:h-8 rounded-full mb-4 text-[0.65rem]`}
                             onClick={async () => {
                               // Amount we send for each bag collected
                               const perBag = Number(

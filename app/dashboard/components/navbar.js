@@ -41,6 +41,7 @@ export default function Navbar() {
     if (wallet?.classicAddress) getWCPDetails();
   }, [dispatch, wallet?.classicAddress]);
 
+  // The implementation of the above idea, but i did not use hash or jwt for obvious reasons
   useEffect(() => {
     (async () => {
       const encrypted_seed = localStorage.getItem("ripple_clen_up");
@@ -117,7 +118,7 @@ export default function Navbar() {
             <ul
               className={
                 (openMenu ? "flex " : "hidden ") +
-                "absolute flex-col top-[2.5rem] right-[0.2rem] bg-white p-2 gap-2 rounded-lg shadow-2xl"
+                "absolute flex-col top-[2.5rem] right-[0.2rem] bg-white p-2 gap-2 rounded-lg z-50 shadow-2xl"
               }
             >
               <li className="flex w-full rounded-lg hover:bg-milk p-2">

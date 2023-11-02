@@ -160,7 +160,7 @@ export default function Wallet({ onclick }) {
   const TransactionList = () => {
     const [refreshClicked, setRefreshClicked] = useState(false);
     return (
-      <div className="flex lg:w-1/2 w-full flex-col gap-2 mb-2">
+      <div className="flex w-full flex-col gap-2 mb-2">
         <span className="mt-2 md:text-base text-[0.75rem] justify-between flex font-semibold">
           <span>Recent Transactions</span>
           <button
@@ -188,7 +188,7 @@ export default function Wallet({ onclick }) {
 
             return (
               <li
-                className="border-b border-[#a2a2a2] flex justify-between md:text-[0.875rem] text-[0.75rem] pt-8 pb-2 mx-2"
+                className="border-b border-[#a2a2a2] md:gap-6 flex justify-between md:text-[0.875rem] text-[0.75rem] pt-8 pb-2 mx-2"
                 key={transaction.tx.hash}
               >
                 <span>{type}</span>
