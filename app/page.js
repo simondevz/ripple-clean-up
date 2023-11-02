@@ -1,10 +1,14 @@
 import Link from "next/link";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import Content from "./components/content";
 
 export default function Home() {
   return (
-    <div className="flex lg:flex-row flex-col py-6 px-4">
-      <h1>Landing Page Under Construction</h1>
-      <Link href="/dashboard">click here to visit dashboard</Link>
+    <div>
+      <Header />
+      <Content />
+      <Footer />
     </div>
   );
 }
