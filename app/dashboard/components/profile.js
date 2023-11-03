@@ -112,7 +112,7 @@ export default function Profile({ wcp, onclick }) {
                   Verified Submitions
                 </button>
               </div>
-              <ul>
+              <ul className="h-[10rem] overflow-x-auto">
                 {submitionsList
                   .filter((submition) => {
                     if (!filter) return submition;
