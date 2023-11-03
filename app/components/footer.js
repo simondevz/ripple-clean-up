@@ -12,7 +12,7 @@ import { BsApple } from "react-icons/bs";
 
 export default function Footer() {
   return (
-    <footer className="flex lg:flex-row flex-col-reverse gap-8 md:p-20 p-12 justify-between bg-primary">
+    <footer className="flex lg:flex-row flex-col-reverse gap-8 md:p-20 p-6 justify-between bg-primary">
       <div className="flex flex-col justify-between gap-10">
         <div>
           <h4 className="md:text-[2.8rem] text-[2rem] font-semibold">

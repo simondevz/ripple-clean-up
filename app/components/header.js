@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <nav className="flex justify-between md:px-20 px-12 md:py-8 py-6">
+    <nav className="flex justify-between md:px-20 px-6 md:py-8 py-6">
       <div className="flex gap-2">
         <Image
           src={rippleLogo}

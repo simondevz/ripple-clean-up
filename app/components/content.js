@@ -7,7 +7,7 @@ import codeonscreen from "../../public/codeonscreen.jpeg";
 
 export default function Content() {
   return (
-    <div className="flex flex-col md:px-20 px-12 md:py-8 py-6 lg:mb-[-22rem]">
+    <div className="flex flex-col md:px-20 px-6 md:py-8 py-6 lg:mb-[-22rem]">
       <div className="flex lg:flex-row flex-col gap-8 justify-between">
         <div className="flex flex-col gap-4 mx-auto">
           <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
