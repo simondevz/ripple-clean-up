@@ -22,6 +22,7 @@ module.exports = {
       ash: "#626262",
       blue: "#000AFF",
       error: "rgb(220 38 38)",
+      green: "rgb(34 197 94)",
     },
     extend: {
       animation: {

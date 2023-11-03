@@ -30,6 +30,14 @@ export default function Navbar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (location.hash === "#openwallet") {
+      setShow(true);
+      router.replace("/dashboard");
+      router.push(connected ? "/dashboard#wallet" : "/dashboard#connectwallet");
+    }
+  }, []);
+
+  useEffect(() => {
     const getWCPDetails = async () => {
       const { data } = await axios.get(
         `api/wcp?account=${wallet?.classicAddress}`
@@ -110,7 +118,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => setOpenMenu(!openMenu)}
-              className="flex relative md:hidden gap-[0.3rem] my-auto bg-primary rounded-lg py-2 pl-2 pr-[0.3rem]"
+              className="flex relative gap-[0.3rem] my-auto bg-primary rounded-lg py-2 pl-2 pr-[0.3rem]"
             >
               <Image src={ripplelogo} alt="cc" className="w-4 h-4" />
               {openMenu ? <RiArrowUpSLine /> : <RiArrowDownSLine />}
@@ -121,7 +129,7 @@ export default function Navbar() {
                 "absolute flex-col top-[2.5rem] right-[0.2rem] bg-white p-2 gap-2 rounded-lg z-50 shadow-2xl"
               }
             >
-              <li className="flex w-full rounded-lg hover:bg-milk p-2">
+              <li className="flex md:hidden w-full rounded-lg hover:bg-milk p-2">
                 <span
                   onClick={() => {
                     setShow("wcpform");

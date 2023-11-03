@@ -8,6 +8,10 @@ const initialState = {
   wallet: null,
   wcpDetails: null, // for if you are a waste collection point
   wcpList: [],
+  notificationData: {
+    show: false,
+    secret: "",
+  },
 };
 
 export const appSlice = createSlice({
@@ -35,6 +39,9 @@ export const appSlice = createSlice({
     updateWCPList2: (state, action) => {
       return { ...state, wcpList: [...state.wcpList, action.payload] };
     },
+    updateNotificationdata: (state, action) => {
+      return { ...state, notificationData: action.payload };
+    },
   },
 });
 
@@ -46,5 +53,6 @@ export const {
   addWallet,
   toggleConnected,
   updateWCPdetails,
+  updateNotificationdata,
 } = appSlice.actions;
 export default appSlice.reducer;

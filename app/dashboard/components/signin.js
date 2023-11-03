@@ -4,11 +4,12 @@ import {
   addWallet,
   toggleConnected,
   toggleShowAddWallet,
+  updateNotificationdata,
 } from "../../reduxState/slice";
 import { Client, Wallet, isValidSecret } from "xrpl";
 import Cryptr from "cryptr";
 import { useRouter } from "next/navigation";
-import { RiCloseFill } from "react-icons/ri";
+import { RiCheckDoubleFill, RiCloseFill, RiFileCopyFill } from "react-icons/ri";
 
 export const crypto = new Cryptr(process.env.NEXT_PUBLIC_ENCRYPT_SECRET);
 
@@ -18,12 +19,54 @@ export default function Signup({ onclick }) {
   const [errMsg, setErrMsg] = useState("");
 
   const [locationHash, setLocationHash] = useState("#connectwallet");
-  const { showAddWallet } = useSelector((state) => state.app);
+  const { showAddWallet, notificationData } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const Notification = () => {
-    return <div></div>;
+    const [copied, setCopied] = useState(false);
+    return (
+      <div
+        className={`${
+          notificationData.show ? "flex " : "hidden "
+        } z-75 absolute bg-white flex-col shadow-2xl mx-6 rounded-lg my-auto p-4 gap-4 left-[-3rem]`}
+      >
+        <span className="flex flex-col">
+          <span className="flex mx-auto text-center">
+            Please Save your Secret
+          </span>
+          <span className="flex text-center">
+            If your secret is lost you cannot recover your wallet
+          </span>
+        </span>
+        <span className="flex px-2 border border-ash text-btnText rounded-lg gap-2">
+          <span className=" w-[15rem]">{notificationData.secret}</span>
+          <button
+            onClick={async () => {
+              await window.navigator.clipboard.writeText(
+                notificationData.secret
+              );
+              setCopied(true);
+            }}
+            className="px-2 bg-white"
+          >
+            {copied ? (
+              <RiCheckDoubleFill className="text-green" />
+            ) : (
+              <RiFileCopyFill />
+            )}
+          </button>
+        </span>
+        <button
+          onClick={() =>
+            dispatch(updateNotificationdata({ show: false, secret: "" }))
+          }
+          className="bg-primary rounded lg px-6 py-2 flex w-20 mx-auto text-center font-semibold"
+        >
+          Ok
+        </button>
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -74,6 +117,12 @@ export default function Signup({ onclick }) {
               dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
               dispatch(toggleConnected());
               saveTolocalhost(wallet.seed);
+              dispatch(
+                updateNotificationdata({
+                  show: true,
+                  secret: wallet.seed,
+                })
+              );
 
               await client.disconnect();
             } catch (error) {
@@ -142,6 +191,7 @@ export default function Signup({ onclick }) {
           </button>
         )}
       </>
+      <Notification />
     </div>
   );
 }
