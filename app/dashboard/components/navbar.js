@@ -102,7 +102,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          <span className="md:flex hidden font-bold my-auto text-[1.5rem] relative left-[-5rem]">
+          <span className="md:flex hidden font-bold my-auto text-[1.5rem] relative md:left-[-1rem]">
             Dashboard
           </span>
 
@@ -112,7 +112,10 @@ export default function Navbar() {
                 setShow(true);
                 router.push(`/dashboard#connectwallet`);
               }}
-              className="flex  px-6 my-auto md:pt-[0.3rem] pt-[0.4rem] md:text-[0.875rem] text-[0.75rem] h-8 font-semibold bg-primary rounded-lg"
+              className={
+                (connected ? "ml-[5rem] " : "") +
+                "flex  px-6 my-auto md:pt-[0.3rem] pt-[0.4rem] md:text-[0.875rem] text-[0.75rem] h-8 font-semibold bg-primary rounded-lg"
+              }
             >
               {connected ? "Wallet" : "Connect Wallet"}
             </button>

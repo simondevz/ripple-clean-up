@@ -19,13 +19,13 @@ export default function Analytics() {
   const [analytics, setAnalytics] = useState({ bags: 0, amount: 0 });
 
   useEffect(() => {
+    // gets the number of bags and amount paid in the past week
     const getAnalytics = async () => {
       try {
         const {
           data: { data },
         } = await axios.get("/api/analytics");
         setAnalytics(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -34,6 +34,7 @@ export default function Analytics() {
   }, []);
 
   useEffect(() => {
+    // gets transactions from the ledgrer
     const getTransactions = async () => {
       try {
         const wallet = Wallet.fromSeed(process.env.NEXT_PUBLIC_COMPANY_SEED);
@@ -62,6 +63,7 @@ export default function Analytics() {
     getTransactions();
   }, [refresh]);
 
+  // tobe passed into a popup component
   const onclick = () => {
     setShow(false);
   };
@@ -145,7 +147,11 @@ export default function Analytics() {
           </span>
         </button>
       </div>
-      <Popup show={show} child={<SubmitionHistory onclick={onclick} />} />
+      <Popup
+        show={show}
+        onclick={onclick}
+        child={<SubmitionHistory onclick={onclick} />}
+      />
     </>
   );
 }

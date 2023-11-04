@@ -114,7 +114,7 @@ const WcpForm = ({ onclick, wallet }) => {
         {loading ? (
           <VscLoading className="animate-spin mx-auto text-white" />
         ) : (
-          "Become WCP"
+          "Become a WCP"
         )}
       </button>
     </div>

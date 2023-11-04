@@ -99,7 +99,7 @@ export default function Profile({ wcp, onclick }) {
                   onClick={() => setFilter("unverified")}
                   className={`${
                     filter === "unverified" ? "text-error " : ""
-                  } p-4 md:text-base text-[0.75rem] font-semibold bg-primary rounded-lg w-full`}
+                  } p-4 md:text-[0.875rem] text-[0.75rem] font-semibold whitespace-nowrap bg-primary rounded-lg w-full`}
                 >
                   Unverified Submitions
                 </button>
@@ -107,7 +107,7 @@ export default function Profile({ wcp, onclick }) {
                   onClick={() => setFilter("verified")}
                   className={`${
                     filter === "verified" ? "text-blue " : ""
-                  } p-4  md:text-base text-[0.75rem] bg-primary font-semibold rounded-lg w-full`}
+                  } p-4  md:text-[0.875rem] text-[0.75rem] bg-primary whitespace-nowrap font-semibold rounded-lg w-full`}
                 >
                   Verified Submitions
                 </button>
@@ -149,7 +149,7 @@ export default function Profile({ wcp, onclick }) {
                               }
                               setDisplayImageList(Number(submition.id));
                             }}
-                            className="flex relative justify-between gap-2 md:pl-4 pl-2 pr-2 md:h-8 h-4  bg-[#D9D9D9] rounded-full"
+                            className="flex relative justify-between gap-2 md:pl-4 pl-2 pr-2 md:h-8 h-6 mb-2 bg-[#D9D9D9] rounded-full"
                           >
                             <span className="text-[0.65rem] my-auto">
                               images
@@ -183,7 +183,7 @@ export default function Profile({ wcp, onclick }) {
                               submition.verified
                                 ? " text-blue "
                                 : " text-error hover:bg-error/20 "
-                            } px-4 md:h-8 rounded-full mb-4 text-[0.65rem]`}
+                            } px-4 md:h-8 w-[5rem] rounded-full mb-4 text-[0.65rem]`}
                             onClick={async () => {
                               // Amount we send for each bag collected
                               const perBag = Number(

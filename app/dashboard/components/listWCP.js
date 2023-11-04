@@ -19,11 +19,10 @@ export default function ListWCP() {
   const router = useRouter();
 
   const [profileWCP, setProfileWCP] = useState(null);
-  const { wallet, connected, wcpDetails, wcpList } = useSelector(
-    (state) => state.app
-  );
+  const { wallet, connected, wcpList } = useSelector((state) => state.app);
 
   useEffect(() => {
+    // get the list of wcp to display
     const getWCPList = async () => {
       try {
         const { data } = await axios.get("/api/wcp?query=all");
@@ -35,6 +34,7 @@ export default function ListWCP() {
     getWCPList();
   }, [dispatch]);
 
+  // Component for trash submition
   const SubmitForm = ({ listOfWCP }) => {
     const [files, setFiles] = useState([]);
     const [number, setNumber] = useState("");
@@ -48,8 +48,8 @@ export default function ListWCP() {
     useEffect(() => {
       function handleHashChange() {
         if (window.location.hash !== "#submittionform") {
-          setLocationHash("");
-          setShow("");
+          setLocationHash(""); // resets the hash in the url
+          setShow(""); // closes the popup
         }
       }
 
@@ -162,6 +162,7 @@ export default function ListWCP() {
                 headers,
               });
 
+              // if the status code is within 200 close else show error message
               if (data.status > 199 && data.status < 300) {
                 setloading(false);
                 setShow("");
@@ -172,7 +173,6 @@ export default function ListWCP() {
                     "Something went Wrong. Check your network and try again."
                 );
               }
-              console.log(data);
             } catch (error) {
               setloading(false);
               setErrMsg(
@@ -212,12 +212,14 @@ export default function ListWCP() {
         <ul className="flex gap-2 flex-col md:py-4 py-2 overflow-x-auto md:h-[21rem] h-[17rem]">
           {wcpList
             .filter((item) => {
+              // filter the lists of wcp based of the text in the search bar
               return (
                 item.name.toLowerCase().includes(filter.toLowerCase()) ||
                 item.address.toLowerCase().includes(filter.toLowerCase())
               );
             })
             .map((wcp) => {
+              // display the filtered list
               return (
                 <li
                   onClick={() => {
@@ -260,6 +262,7 @@ export default function ListWCP() {
           </span>
         </button>
       </span>
+      {/* Popup show submition form if submitform else show the profile */}
       <Popup
         show={show}
         child={
