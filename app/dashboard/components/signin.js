@@ -39,8 +39,8 @@ export default function Signup({ onclick }) {
             If your secret is lost you cannot recover your wallet
           </span>
         </span>
-        <span className="flex px-2 border border-ash text-btnText rounded-lg gap-2">
-          <span className=" overflow-hidden w-[15rem]">
+        <span className="flex px-2 py-[0.5rem] border border-ash text-btnText rounded-lg gap-2">
+          <span className=" overflow-hidden w-[15rem] text-[0.875rem]">
             {notificationData.secret}
           </span>
           <button

@@ -7,13 +7,13 @@ import codeonscreen from "../../public/codeonscreen.jpeg";
 
 export default function Content() {
   return (
-    <div className="flex flex-col md:px-20 px-6 md:py-8 py-6 lg:mb-[-22rem]">
+    <div className="flex flex-col md:px-20 px-6 md:py-8 py-6 lg:mb-[-20rem] xl:mb-[-26rem]">
       <div className="flex lg:flex-row flex-col gap-8 justify-between">
         <div className="flex flex-col gap-4 mx-auto">
-          <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
+          <h2 className="xl:text-[3rem] font-semibold lg:text-[2.1rem] md:text-[3rem] text-[2rem]">
             What is Ripple Clean-Up?
           </h2>
-          <p className="text-[1rem] md:text-[1rem] md:text-[1.2rem] lg:text-[1.4rem] lg:w-[45rem]">
+          <p className="xl:text-[1.2rem] xl:w-[35rem]  lg:text-[0.875rem] text-[1rem] md:text-[1rem] md:text-[1.2rem] lg:w-[25rem]">
             At Ripple Clean-up, we’re on a mission to make the world a cleaner
             and greener place. We’ve harnessed the power of blockchain
             technology to incentivize and facilitate proper waste disposal. By
@@ -28,16 +28,16 @@ export default function Content() {
         <Image
           src={guypickingtrash}
           alt="cc"
-          className="rounded-md mx-auto w-[30rem] object-cover md:h-[27rem] h-[15rem] mb-[1rem]"
+          className="rounded-md xl:w-[31rem] xl:h-[27rem] mx-auto lg:w-[22rem] lg:h-[19rem] w-[30rem] object-cover md:h-[27rem] h-[15rem] mb-[1rem]"
         />
       </div>
 
       <div className="flex gap-8 lg:flex-row-reverse flex-col justify-between">
         <div className="flex flex-col gap-4 mx-auto">
-          <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
+          <h2 className="xl:text-[3rem] font-semibold lg:text-[2.1rem] md:text-[3rem] text-[2rem]">
             Waste Collection Points
           </h2>
-          <p className=" text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]   lg:w-[40rem]">
+          <p className="xl:text-[1.2rem] xl:w-[30rem]  lg:text-[0.875rem] text-[1rem] md:text-[1.2rem] lg:w-[25rem]">
             Environmental conscious organizations and individuals can register
             their waste collection points on our platform, allowing users to
             find and contribute easily.
@@ -47,16 +47,16 @@ export default function Content() {
         <Image
           src={trash}
           alt="cc"
-          className="rounded-md mx-auto w-[30rem] object-cover md:h-[27rem] h-[15rem] lg:relative top-[-8.5rem]"
+          className="rounded-md xl:w-[31rem] xl:h-[27rem] mx-auto lg:w-[22rem] lg:h-[19rem] w-[30rem] object-cover md:h-[27rem] h-[15rem] lg:relative top-[-5rem] xl:top-[-4rem]"
         />
       </div>
 
-      <div className="flex gap-8 lg:flex-row flex-col lg:relative top-[-7rem] justify-between">
+      <div className="flex gap-8 lg:flex-row flex-col lg:relative top-[-4.5rem] xl:top-[-2.5rem] justify-between">
         <div className="flex flex-col gap-4 mx-auto">
-          <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
+          <h2 className="xl:text-[3rem] font-semibold lg:text-[2.1rem] md:text-[3rem] text-[2rem]">
             Submit Collection Data
           </h2>
-          <p className=" text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]   lg:w-[45rem]">
+          <p className="xl:text-[1.2rem] xl:w-[35rem]  lg:text-[0.875rem] text-[1rem] md:text-[1.2rem] lg:w-[25rem]">
             Report your waste collection activities with ease. Scan the QR codes
             at designated collection points and update proof of collection, such
             as photos of your clean up efforts.
@@ -65,16 +65,16 @@ export default function Content() {
         <Image
           src={codeonscreen}
           alt="cc"
-          className="rounded-md mx-auto w-[30rem] lg:relative top-[-5rem] object-cover md:h-[27rem] h-[15rem]"
+          className="rounded-md xl:w-[31rem] xl:h-[27rem] mx-auto lg:w-[22rem] lg:h-[19rem] w-[30rem] lg:relative top-[-5rem] xl:top-[-10.5rem] object-cover md:h-[27rem] h-[15rem]"
         />
       </div>
 
-      <div className="flex gap-8 lg:flex-row-reverse flex-col lg:relative top-[-10rem] justify-between">
+      <div className="flex gap-8 lg:flex-row-reverse flex-col lg:relative top-[-8.5rem] xl:top-[-11rem] justify-between">
         <div className="flex flex-col gap-4 mx-auto">
-          <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
+          <h2 className="xl:text-[3rem] font-semibold lg:text-[2.1rem] md:text-[3rem] text-[2rem]">
             Smart Contracts
           </h2>
-          <p className=" text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]  lg:w-[40rem]">
+          <p className="xl:text-[1.2rem] xl:w-[35rem]  lg:text-[0.875rem] text-[1rem] md:text-[1.2rem] lg:w-[25rem]">
             Our blockchain-based smart contracts verify and record each waste
             collection transaction. Tokens are rewarded based on the type and
             quality of waste collected.
@@ -83,16 +83,16 @@ export default function Content() {
         <Image
           src={blockchain}
           alt="cc"
-          className="rounded-md mx-auto w-[30rem] lg:relative top-[-7rem] object-cover md:h-[27rem] h-[15rem]"
+          className="rounded-md xl:w-[31rem] xl:h-[27rem] mx-auto lg:w-[22rem] lg:h-[19rem] w-[30rem] lg:relative top-[-5.5rem] object-cover md:h-[27rem] h-[15rem]"
         />
       </div>
 
-      <div className="flex lg:flex-row mb-8 flex-col gap-8 lg:relative top-[-15rem] justify-between">
+      <div className="flex lg:flex-row mb-8 flex-col gap-8 lg:relative top-[-13rem] xl:top-[-15rem] justify-between">
         <div className="flex flex-col gap-4 mx-auto">
-          <h2 className="font-semibold lg:text-[3.5rem] md:text-[3rem] text-[2rem]">
+          <h2 className="xl:text-[3rem] font-semibold lg:text-[2.1rem] md:text-[3rem] text-[2rem]">
             Token Rewards
           </h2>
-          <p className=" text-[1rem] md:text-[1.2rem] lg:text-[1.4rem]  lg:w-[45rem]">
+          <p className="xl:text-[1.2rem] xl:w-[35rem]  lg:text-[0.875rem] text-[1rem] md:text-[1.2rem] lg:w-[25rem]">
             Your hard work pays off with valuable blockchain tokens which you
             can Trade with other users, Redeem for cash rewards, Donate to
             environmental causes, and Exchange at Eco-friendly stores.
@@ -101,7 +101,7 @@ export default function Content() {
         <Image
           src={bitcoin}
           alt="cc"
-          className="rounded-md mx-auto w-[30rem] lg:relative top-[-7rem] object-cover md:h-[27rem] h-[15rem]"
+          className="rounded-md xl:w-[31rem] xl:h-[27rem] mx-auto lg:w-[22rem] lg:h-[19rem] w-[30rem] lg:relative top-[-5rem] xl:top-[-9rem] object-cover md:h-[27rem] h-[15rem]"
         />
       </div>
     </div>
