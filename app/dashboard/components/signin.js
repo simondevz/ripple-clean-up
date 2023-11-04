@@ -40,7 +40,9 @@ export default function Signup({ onclick }) {
           </span>
         </span>
         <span className="flex px-2 border border-ash text-btnText rounded-lg gap-2">
-          <span className=" w-[15rem]">{notificationData.secret}</span>
+          <span className=" overflow-hidden w-[15rem]">
+            {notificationData.secret}
+          </span>
           <button
             onClick={async () => {
               await window.navigator.clipboard.writeText(
@@ -58,9 +60,13 @@ export default function Signup({ onclick }) {
           </button>
         </span>
         <button
-          onClick={() =>
-            dispatch(updateNotificationdata({ show: false, secret: "" }))
-          }
+          onClick={() => {
+            dispatch(
+              addWallet(JSON.parse(JSON.stringify(notificationData.wallet)))
+            ); // To quiet a redux error, still works without it tho
+            dispatch(toggleConnected());
+            dispatch(updateNotificationdata({ show: false, secret: "" }));
+          }}
           className="bg-primary rounded lg px-6 py-2 flex w-20 mx-auto text-center font-semibold"
         >
           Ok
@@ -114,13 +120,12 @@ export default function Signup({ onclick }) {
 
               // Create wallet and update the global state
               const wallet = Wallet.generate();
-              dispatch(addWallet(JSON.parse(JSON.stringify(wallet)))); // To quiet a redux error, still works without it tho
-              dispatch(toggleConnected());
               saveTolocalhost(wallet.seed);
               dispatch(
                 updateNotificationdata({
                   show: true,
                   secret: wallet.seed,
+                  wallet,
                 })
               );
 
