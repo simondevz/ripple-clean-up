@@ -52,7 +52,8 @@ export default function Navbar() {
   // The implementation of the above idea, but i did not use hash or jwt for obvious reasons
   useEffect(() => {
     (async () => {
-      const encrypted_seed = localStorage.getItem("ripple_clen_up");
+      const encrypted_seed =
+        localStorage.getItem("ripple_clen_up") || undefined;
       if (encrypted_seed) {
         const seed = crypto.decrypt(encrypted_seed);
         if (seed) {
